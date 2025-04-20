@@ -1,7 +1,13 @@
-import React from 'react';
-import { ActivityIndicator, Button, SafeAreaView, Text } from 'react-native';
+import {
+	ActivityIndicator,
+	Text,
+	SafeAreaView,
+	ScrollView,
+} from 'react-native';
 import { useProducts } from '../components/hooks/useProducts';
+import { ShopifyProduct } from '../components/utils/modules';
 import ProductsList from '../components/ProductsList';
+import React from 'react';
 
 type Props = {
 	navigation: any;
@@ -9,20 +15,20 @@ type Props = {
 
 export default function HomeScreen({ navigation }: Props) {
 	const { data, isLoading, error } = useProducts();
-	const products =
-		data?.products.edges.map((edge: { node: any }) => edge.node) ?? [];
 
 	if (isLoading) return <ActivityIndicator style={{ marginTop: 50 }} />;
+
 	if (error)
 		return <Text style={{ color: 'red' }}>Error loading products</Text>;
 
+	if (!data || data.length === 0) {
+		return <Text>No products available</Text>;
+	}
 	return (
-		<SafeAreaView>
-			<Button
-				title='Go to Product'
-				onPress={() => navigation.navigate('Product', { name: 'Jane' })}
-			/>
-			<ProductsList products={products} />
-		</SafeAreaView>
+		<ScrollView>
+			<SafeAreaView>
+				<ProductsList navigation={navigation} data={data as ShopifyProduct[]} />
+			</SafeAreaView>
+		</ScrollView>
 	);
 }

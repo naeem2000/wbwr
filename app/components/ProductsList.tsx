@@ -1,37 +1,37 @@
-import { View, Text, ScrollView, Image } from 'react-native';
+import { View, Text, Image, TouchableOpacity, StyleSheet } from 'react-native';
 import React from 'react';
 import { ShopifyProduct } from './utils/modules';
 
 interface Props {
-	products: ShopifyProduct[];
+	navigation: any;
+	data: ShopifyProduct[];
 }
 
-export default function ProductsList({ products }: Props) {
+export default function ProductsList({ data, navigation }: Props) {
 	return (
-		<ScrollView contentContainerStyle={{ padding: 16 }}>
-			{products.map((product, index) => {
-				const imageUrl = product.images?.edges?.[0]?.node?.url;
+		<View style={ProductItemStyle.container}>
+			{data.map((item, index) => {
+				const imageUrl = item.images.edges[0]?.node.url;
 
 				return (
-					<View key={index} style={{ marginBottom: 20 }}>
-						{imageUrl ? (
-							<Image
-								source={{ uri: imageUrl }}
-								style={{ width: 100, height: 100, borderRadius: 8 }}
-							/>
-						) : (
-							<Text style={{ fontStyle: 'italic' }}>No image available</Text>
-						)}
-						<Text style={{ fontSize: 18, fontWeight: 'bold' }}>
-							{product.title}
+					<TouchableOpacity key={index} onPress={() => console.log(index)}>
+						<Image
+							source={{ uri: imageUrl }}
+							style={{ width: 100, height: 100, borderRadius: 8 }}
+						/>
+						<Text>{item.title}</Text>
+						<Text style={{ color: 'black' }}>
+							{item.variants.edges[0].node.price.amount}
 						</Text>
-						<Text>{product.description || 'No description'}</Text>
-						<Text style={{ color: 'blue' }}>
-							{imageUrl ? `Image: ${imageUrl}` : 'No image URL'}
-						</Text>
-					</View>
+					</TouchableOpacity>
 				);
 			})}
-		</ScrollView>
+		</View>
 	);
 }
+
+const ProductItemStyle = StyleSheet.create({
+	container: {
+		flex: 2,
+	},
+});
