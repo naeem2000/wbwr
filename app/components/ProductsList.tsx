@@ -1,37 +1,71 @@
-import { View, Text, Image, TouchableOpacity, StyleSheet } from 'react-native';
-import React from 'react';
 import { ShopifyProduct } from './utils/modules';
+import React from 'react';
+import {
+	View,
+	Text,
+	Image,
+	TouchableOpacity,
+	FlatList,
+	ActivityIndicator,
+	StyleSheet,
+} from 'react-native';
 
 interface Props {
 	navigation: any;
 	data: ShopifyProduct[];
+	loadMore: () => void;
+	isLoadingMore: boolean;
 }
 
-export default function ProductsList({ data, navigation }: Props) {
-	return (
-		<View style={ProductItemStyle.container}>
-			{data.map((item, index) => {
-				const imageUrl = item.images.edges[0]?.node.url;
+export default function ProductsList({
+	data,
+	navigation,
+	loadMore,
+	isLoadingMore,
+}: Props) {
+	const renderItem = ({
+		item,
+		index,
+	}: {
+		item: ShopifyProduct;
+		index: number;
+	}) => {
+		const imageUrl = item.images.edges[0]?.node.url;
+		const price = item.variants.edges[0]?.node.price.amount;
 
-				return (
-					<TouchableOpacity key={index} onPress={() => console.log(index)}>
-						<Image
-							source={{ uri: imageUrl }}
-							style={{ width: 100, height: 100, borderRadius: 8 }}
-						/>
-						<Text>{item.title}</Text>
-						<Text style={{ color: 'black' }}>
-							{item.variants.edges[0].node.price.amount}
-						</Text>
-					</TouchableOpacity>
-				);
-			})}
-		</View>
+		return (
+			<TouchableOpacity
+				key={index}
+				onPress={() => navigation.navigate('ProductDetail', { product: item })}
+				style={{ marginBottom: 16 }}
+			>
+				<Image
+					source={{ uri: imageUrl }}
+					style={{ width: 100, height: 100, borderRadius: 8 }}
+				/>
+				<Text>{item.title}</Text>
+				<Text style={{ color: 'black' }}>R{price}</Text>
+			</TouchableOpacity>
+		);
+	};
+
+	return (
+		<FlatList
+			data={data}
+			renderItem={renderItem}
+			keyExtractor={(_, index) => index.toString()}
+			onEndReached={loadMore}
+			onEndReachedThreshold={0.5}
+			ListFooterComponent={
+				isLoadingMore ? <ActivityIndicator style={{ margin: 16 }} /> : null
+			}
+			contentContainerStyle={ProductItemStyle.container}
+		/>
 	);
 }
 
 const ProductItemStyle = StyleSheet.create({
 	container: {
-		flex: 2,
+		padding: 16,
 	},
 });
