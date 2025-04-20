@@ -4,6 +4,11 @@ interface ShopifyImageNode {
 	};
 }
 
+export type RootStackParamList = {
+	Index: undefined;
+	Home: undefined;
+};
+
 export interface ShopifyProduct {
 	id: string;
 	title: string;

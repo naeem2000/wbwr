@@ -1,7 +1,7 @@
-import { ShopifyProductResponse } from '@/constants/modules';
 import { useQuery } from '@tanstack/react-query';
-import { shopifyClient } from './ShopifyClient';
-import { PRODUCTS_QUERY } from './queries';
+import { ShopifyProductResponse } from '../utils/modules';
+import { PRODUCTS_QUERY } from '../utils/queries';
+import { shopifyClient } from '../utils/ShopifyClient';
 
 export const useProducts = () => {
 	return useQuery<ShopifyProductResponse>({

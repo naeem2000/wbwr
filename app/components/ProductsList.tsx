@@ -1,12 +1,12 @@
 import { View, Text, ScrollView, Image } from 'react-native';
-import { ShopifyProduct } from '@/constants/modules';
 import React from 'react';
+import { ShopifyProduct } from './utils/modules';
 
 interface Props {
 	products: ShopifyProduct[];
 }
 
-export default function ProductList({ products }: Props) {
+export default function ProductsList({ products }: Props) {
 	return (
 		<ScrollView contentContainerStyle={{ padding: 16 }}>
 			{products.map((product, index) => {
