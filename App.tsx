@@ -1,8 +1,12 @@
-import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
-import { NavigationContainer } from '@react-navigation/native';
+import { colorScheme, backgroundImage } from './app/components/utils/constants';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
-import HomeScreen from './app/screens/HomeScreen';
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+import ProductDetailScreen from './app/components/ProductDetailScreen';
+import { NavigationContainer } from '@react-navigation/native';
+import { ImageBackground, StyleSheet } from 'react-native';
 import ProductScreen from './app/screens/ProductScreen';
+import React, { useEffect, useState } from 'react';
+import HomeScreen from './app/screens/HomeScreen';
 
 const queryClient = new QueryClient();
 const Stack = createNativeStackNavigator();
@@ -10,20 +14,47 @@ const Stack = createNativeStackNavigator();
 export default function RootLayout() {
 	return (
 		<QueryClientProvider client={queryClient}>
-			<NavigationContainer>
-				<Stack.Navigator>
-					<Stack.Screen
-						name='Home'
-						component={HomeScreen}
-						options={{ title: 'Welcome' }}
-					/>
-					<Stack.Screen
-						name='Product'
-						component={ProductScreen}
-						options={{ title: 'Product' }}
-					/>
-				</Stack.Navigator>
-			</NavigationContainer>
+			<ImageBackground
+				source={backgroundImage}
+				style={styles.background}
+				resizeMode='cover'
+			>
+				<NavigationContainer>
+					<Stack.Navigator
+						screenOptions={{
+							headerTitleAlign: 'center',
+							statusBarBackgroundColor:
+								colorScheme === 'dark' ? '#fff' : '#000',
+						}}
+					>
+						<Stack.Screen
+							name='Home'
+							component={HomeScreen}
+							options={{ title: 'Vans' }}
+						/>
+						<Stack.Screen
+							name='Product'
+							component={ProductScreen}
+							options={{ title: 'Product' }}
+						/>
+						<Stack.Screen
+							name='ProductDetail'
+							component={ProductDetailScreen as React.ComponentType<any>}
+							options={{
+								title: 'Product',
+							}}
+						/>
+					</Stack.Navigator>
+				</NavigationContainer>
+			</ImageBackground>
 		</QueryClientProvider>
 	);
 }
+
+const styles = StyleSheet.create({
+	background: {
+		flex: 1,
+		width: '100%',
+		height: '100%',
+	},
+});

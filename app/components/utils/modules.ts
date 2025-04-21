@@ -18,7 +18,7 @@ interface ShopifyVariantNode {
 }
 
 // whole product object
-export interface ShopifyProduct {
+export default interface ShopifyProduct {
 	id: string;
 	title: string;
 	handle: string;
@@ -42,4 +42,8 @@ export interface ShopifyProductResponse {
 			node: ShopifyProduct;
 		}[];
 	};
+}
+
+export interface Colors {
+	[key: string]: string;
 }
