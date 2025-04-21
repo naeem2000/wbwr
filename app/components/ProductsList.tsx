@@ -1,17 +1,16 @@
-import { ShopifyProduct } from './utils/modules';
+import { numColumns, fallbackImg } from './utils/constants';
 import React, { useCallback, useState } from 'react';
+import { ProductInGridStyles } from './utils/styles';
+import ShopifyProduct from './utils/modules';
 import {
+	View,
 	Text,
 	Image,
 	FlatList,
-	StyleSheet,
-	View,
+	RefreshControl,
 	TouchableOpacity,
 	ActivityIndicator,
-	Dimensions,
-	RefreshControl,
 } from 'react-native';
-import { useProducts } from './hooks/useProducts';
 
 interface Props {
 	navigation: any;
@@ -20,20 +19,23 @@ interface Props {
 	isLoadingMore: boolean;
 }
 
-const screenWidth = Dimensions.get('window').width;
-const numColumns = 2;
-const spacing = 16;
-const itemWidth = (screenWidth - spacing * (numColumns + 1)) / numColumns;
-
 export default function ProductsList({
 	data,
 	navigation,
 	loadMore,
 	isLoadingMore,
 }: Props) {
-	const { fetchMore } = useProducts();
-
 	const [isRefreshing, setIsRefreshing] = useState(false);
+
+	const onRefresh = useCallback(() => {
+		setIsRefreshing(true);
+
+		loadMore();
+		setTimeout(() => {
+			setIsRefreshing(false);
+		}, 2000);
+	}, []);
+
 	const renderItem = ({ item }: { item: ShopifyProduct; index: number }) => {
 		const imageUrl = item.images.edges[0]?.node.url;
 		const price = item.variants.edges[0]?.node.price.amount;
@@ -41,76 +43,38 @@ export default function ProductsList({
 		return (
 			<TouchableOpacity
 				onPress={() => navigation.navigate('ProductDetail', { product: item })}
-				style={ProductGridStyles.item}
+				style={ProductInGridStyles.item}
 			>
 				<Image
-					source={{ uri: imageUrl }}
-					style={ProductGridStyles.image}
+					source={imageUrl ? { uri: imageUrl } : fallbackImg}
+					style={ProductInGridStyles.image}
 					resizeMode='cover'
 				/>
-				<View style={ProductGridStyles.productText}>
-					<Text numberOfLines={1} style={ProductGridStyles.title}>
+				<View style={ProductInGridStyles.productText}>
+					<Text numberOfLines={1} style={ProductInGridStyles.title}>
 						{item.title}
 					</Text>
-					<Text style={ProductGridStyles.price}>R{price}</Text>
+					<Text style={ProductInGridStyles.price}>R{price}</Text>
 				</View>
 			</TouchableOpacity>
 		);
 	};
-	const onRefresh = useCallback(() => {
-		setIsRefreshing(true);
-
-		fetchMore();
-		setTimeout(() => {
-			setIsRefreshing(false);
-		}, 2000);
-	}, []);
 
 	return (
 		<FlatList
 			data={data}
 			renderItem={renderItem}
 			numColumns={numColumns}
-			keyExtractor={(item, index) => item.id ?? index.toString()}
+			keyExtractor={(_, index) => index.toString()}
 			onEndReached={loadMore}
 			onEndReachedThreshold={0.5}
 			ListFooterComponent={
 				isLoadingMore ? <ActivityIndicator style={{ margin: 16 }} /> : null
 			}
-			contentContainerStyle={ProductGridStyles.productContainer}
+			contentContainerStyle={ProductInGridStyles.productContainer}
 			refreshControl={
 				<RefreshControl refreshing={isRefreshing} onRefresh={onRefresh} />
 			}
 		/>
 	);
 }
-
-const ProductGridStyles = StyleSheet.create({
-	productContainer: {
-		padding: 10,
-		backgroundColor: '#FFF',
-	},
-	item: {
-		width: itemWidth,
-		margin: 8,
-		backgroundColor: '#d3d3d352',
-		borderRadius: 10,
-	},
-	image: {
-		width: '100%',
-		height: 120,
-		borderRadius: 8,
-		backgroundColor: '#f0f0f0',
-	},
-	productText: {
-		padding: 10,
-	},
-	title: {
-		fontSize: 14,
-		color: '#333',
-	},
-	price: {
-		color: '#000',
-		fontWeight: '500',
-	},
-});

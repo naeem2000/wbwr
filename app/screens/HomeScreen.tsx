@@ -1,7 +1,12 @@
-import { Text, SafeAreaView, ActivityIndicator } from 'react-native';
+import { Text, SafeAreaView, ActivityIndicator, Image } from 'react-native';
 import { useProducts } from '../components/hooks/useProducts';
 import ProductsList from '../components/ProductsList';
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
+import {
+	backgroundImage,
+	screenHeight,
+	screenWidth,
+} from '../components/utils/constants';
 
 type Props = {
 	navigation: any;
@@ -24,7 +29,8 @@ export default function HomeScreen({ navigation }: Props) {
 		}
 	};
 
-	if (isLoading) return <ActivityIndicator style={{ marginTop: 50 }} />;
+	if (isLoading)
+		return <ActivityIndicator size={30} style={{ marginTop: 50 }} />;
 
 	if (error)
 		return <Text style={{ color: 'red' }}>Error loading products</Text>;
@@ -34,7 +40,7 @@ export default function HomeScreen({ navigation }: Props) {
 	}
 
 	return (
-		<SafeAreaView style={{ flex: 1 }}>
+		<SafeAreaView style={{ flex: 1, backgroundColor: 'transparent' }}>
 			<ProductsList
 				navigation={navigation}
 				data={data}
