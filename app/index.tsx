@@ -3,13 +3,7 @@ import HomeScreen from './screens/HomeScreen';
 
 export default function Index({ navigation }: any) {
 	return (
-		<ScrollView
-			style={{
-				flex: 1,
-				justifyContent: 'center',
-				alignItems: 'center',
-			}}
-		>
+		<ScrollView>
 			<HomeScreen navigation={navigation} />
 		</ScrollView>
 	);

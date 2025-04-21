@@ -3,7 +3,8 @@ import { Text } from 'react-native';
 import React from 'react';
 
 type Props = {
-	route: RouteProp<{ ProductDetail: { product: any } }, 'ProductDetail'>; // Define the type of route params
+	// Define the type of route params almost like the params hook from nextjs
+	route: RouteProp<{ ProductDetail: { product: any } }, 'ProductDetail'>;
 };
 export default function Product({ route }: Props) {
 	// getting there products param from the route almost like useparams from nextjs.

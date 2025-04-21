@@ -67,5 +67,6 @@ export const useProducts = () => {
 		hasMore,
 		error,
 		fetchMore,
+		fetchProducts,
 	};
 };

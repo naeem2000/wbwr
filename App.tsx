@@ -3,7 +3,7 @@ import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import HomeScreen from './app/screens/HomeScreen';
 import ProductScreen from './app/screens/ProductScreen';
-import Product from './app/components/Product';
+import ProductDetailScreen from './app/components/ProductDetailScreen';
 
 const queryClient = new QueryClient();
 const Stack = createNativeStackNavigator();
@@ -16,7 +16,7 @@ export default function RootLayout() {
 					<Stack.Screen
 						name='Home'
 						component={HomeScreen}
-						options={{ title: 'Welcome' }}
+						options={{ title: 'Vans', headerTitleAlign: 'center' }}
 					/>
 					<Stack.Screen
 						name='Product'
@@ -25,7 +25,7 @@ export default function RootLayout() {
 					/>
 					<Stack.Screen
 						name='ProductDetail'
-						component={Product as React.ComponentType<any>}
+						component={ProductDetailScreen as React.ComponentType<any>}
 						options={{ title: 'Product' }}
 					/>
 				</Stack.Navigator>
