@@ -1,11 +1,12 @@
+import { colorScheme, backgroundImage } from './app/components/utils/constants';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import ProductDetailScreen from './app/components/ProductDetailScreen';
 import { NavigationContainer } from '@react-navigation/native';
 import { ImageBackground, StyleSheet } from 'react-native';
 import ProductScreen from './app/screens/ProductScreen';
+import React, { useEffect, useState } from 'react';
 import HomeScreen from './app/screens/HomeScreen';
-import { colorScheme, backgroundImage } from './app/components/utils/constants';
 
 const queryClient = new QueryClient();
 const Stack = createNativeStackNavigator();
@@ -29,7 +30,7 @@ export default function RootLayout() {
 						<Stack.Screen
 							name='Home'
 							component={HomeScreen}
-							options={{ title: 'Vans', headerTitleAlign: 'center' }}
+							options={{ title: 'Vans' }}
 						/>
 						<Stack.Screen
 							name='Product'
@@ -39,7 +40,9 @@ export default function RootLayout() {
 						<Stack.Screen
 							name='ProductDetail'
 							component={ProductDetailScreen as React.ComponentType<any>}
-							options={{ title: 'Product' }}
+							options={{
+								title: 'Product',
+							}}
 						/>
 					</Stack.Navigator>
 				</NavigationContainer>

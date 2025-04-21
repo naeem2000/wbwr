@@ -1,6 +1,6 @@
 import { numColumns, fallbackImg } from './utils/constants';
 import React, { useCallback, useState } from 'react';
-import { ProductInGridStyles } from './utils/styles';
+import ProductInGridStyles from './utils/styles';
 import ShopifyProduct from './utils/modules';
 import {
 	View,
@@ -11,6 +11,7 @@ import {
 	TouchableOpacity,
 	ActivityIndicator,
 } from 'react-native';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 interface Props {
 	navigation: any;
@@ -40,9 +41,16 @@ export default function ProductsList({
 		const imageUrl = item.images.edges[0]?.node.url;
 		const price = item.variants.edges[0]?.node.price.amount;
 
+		async function onPress() {
+			// set the title in the local storage
+			await AsyncStorage.setItem('productTitle', item.title);
+			//then navigate
+			navigation.navigate('ProductDetail', { product: item });
+		}
+
 		return (
 			<TouchableOpacity
-				onPress={() => navigation.navigate('ProductDetail', { product: item })}
+				onPress={() => onPress()}
 				style={ProductInGridStyles.item}
 			>
 				<Image

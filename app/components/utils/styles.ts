@@ -7,7 +7,7 @@ const colors: Colors = {
 	black: '#000000',
 };
 
-export const ProductInGridStyles = StyleSheet.create({
+const ProductInGridStyles = StyleSheet.create({
 	productContainer: {
 		padding: 10,
 	},
@@ -33,3 +33,5 @@ export const ProductInGridStyles = StyleSheet.create({
 		fontWeight: '500',
 	},
 });
+
+export default ProductInGridStyles;

@@ -1,4 +1,4 @@
-import { ShopifyProduct, ShopifyProductResponse } from '../utils/modules';
+import ShopifyProduct, { ShopifyProductResponse } from '../utils/modules';
 import { useState, useEffect, useCallback } from 'react';
 import { shopifyClient } from '../utils/ShopifyClient';
 import { PRODUCTS_QUERY } from '../utils/queries';
