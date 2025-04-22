@@ -15,8 +15,8 @@ const ProductInGridStyles = StyleSheet.create({
 	item: {
 		width: itemWidth,
 		margin: 8,
-		backgroundColor: colors.lightGrey,
 		borderRadius: 10,
+		boxShadow: '0px 4px 0px rgba(0, 0, 0, 0.10)',
 	},
 	image: {
 		width: '100%',
@@ -92,6 +92,28 @@ export const productDetailStyles = StyleSheet.create({
 	rowImage: {
 		width: 70,
 		height: 70,
+	},
+});
+
+export const headerStyles = StyleSheet.create({
+	headerBg: {
+		width: screenWidth,
+		height: 200,
+		display: 'flex',
+		alignContent: 'flex-end',
+		justifyContent: 'flex-end',
+		padding: 20,
+	},
+
+	headerButton: {
+		display: 'flex',
+		alignItems: 'center',
+		justifyContent: 'center',
+		color: colors.white,
+		fontSize: 20,
+		backgroundColor: colors.black,
+		width: 130,
+		height: 40,
 	},
 });
 

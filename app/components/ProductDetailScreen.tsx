@@ -1,5 +1,5 @@
 import { backgroundImageStyles, productDetailStyles } from './utils/styles';
-import { fallbackImg, productListBg, screenWidth } from './utils/constants';
+import { fallbackImg, productListBg } from './utils/constants';
 import { RouteProp, useNavigation } from '@react-navigation/native';
 import React, { useLayoutEffect, useState } from 'react';
 import ImageViewer from 'react-native-image-zoom-viewer';
@@ -15,6 +15,7 @@ import {
 	ImageBackground,
 	TouchableOpacity,
 } from 'react-native';
+
 type Props = {
 	// Define the type of route params almost like the params hook from nextjs
 	route: RouteProp<
@@ -22,28 +23,28 @@ type Props = {
 		'ProductDetail'
 	>;
 };
-export default function Product({ route }: Props) {
-	// state for read more text
-	const [isExpanded, setIsExpanded] = useState(false);
 
-	//state for the image modal
+export default function Product({ route }: Props) {
+	// state for the text to expand or not
+	const [isExpanded, setIsExpanded] = useState(false);
+	// state to track the selected image index that was pressed
+	const [selectedImageIndex, setSelectedImageIndex] = useState<number>(0);
+	// state for the modal
 	const [isModalVisible, setIsModalVisible] = useState(false);
 
 	const navigation = useNavigation();
 
-	// getting the products param from the route almost like useparams from nextjs.
 	const { product } = route.params;
 
+	// change the bar text to the product title
 	useLayoutEffect(() => {
-		// set the title of the header for each product displaying on the page
 		navigation.setOptions({
 			headerTitle: product.title,
 		});
 	}, [navigation]);
 
+	// Get the initial image URL that is first in the array
 	const imageUrl = product.images.edges[0]?.node.url;
-
-	console.log(product);
 
 	return (
 		<ImageBackground
@@ -65,22 +66,30 @@ export default function Product({ route }: Props) {
 							source={{ uri: imageUrl }}
 						/>
 					</View>
+
 					<View style={productDetailStyles.imgRowContainer}>
 						{product.images.edges.map((item, index) => {
 							return (
 								<TouchableOpacity
 									key={index}
-									onPress={() => setIsModalVisible(true)}
+									onPress={() => {
+										setSelectedImageIndex(index);
+										setIsModalVisible(true);
+									}}
 								>
 									<Image
 										resizeMode='contain'
 										style={productDetailStyles.rowImage}
-										source={imageUrl ? { uri: item.node.url } : fallbackImg}
+										source={
+											item.node.url ? { uri: item.node.url } : fallbackImg
+										}
 									/>
 								</TouchableOpacity>
 							);
 						})}
 					</View>
+
+					{/* Modal to display the selected image */}
 					<Modal
 						visible={isModalVisible}
 						transparent={true}
@@ -90,12 +99,14 @@ export default function Product({ route }: Props) {
 							imageUrls={product.images.edges.map((item) => ({
 								url: item.node.url,
 							}))}
+							index={selectedImageIndex}
 							key={product.id}
 							onCancel={() => setIsModalVisible(false)}
 							enableSwipeDown={true}
 							enableImageZoom={true}
 						/>
 					</Modal>
+
 					<Text style={productDetailStyles.titleText}>{product.title}</Text>
 					<Text style={productDetailStyles.priceText}>
 						R{product.variants.edges[0].node.price.amount}
@@ -104,7 +115,7 @@ export default function Product({ route }: Props) {
 						Sizes and colors:{' '}
 						{product.variants.edges
 							.map((item) =>
-								item.node.selectedOptions.map((item) => item.value)
+								item.node.selectedOptions.map((option) => option.value)
 							)
 							.join(', ')}
 					</Text>
@@ -120,15 +131,12 @@ export default function Product({ route }: Props) {
 							}}
 						>
 							<Text
-								style={
-									(productDetailStyles.descriptionText,
-									{
-										fontWeight: 'bold',
-										color: 'white',
-										marginTop: 5,
-										marginBottom: 100,
-									})
-								}
+								style={{
+									fontWeight: 'bold',
+									color: 'white',
+									marginTop: 5,
+									marginBottom: 100,
+								}}
 							>
 								{isExpanded ? ' Show less' : ' Show more'}
 							</Text>

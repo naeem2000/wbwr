@@ -13,4 +13,6 @@ export const productListBg = require('../../../assets/images/logo-background.jpg
 
 export const fallbackImg = require('../../../assets/images/no-image-available.jpg');
 
+export const headerImg = require('../../../assets/images/header.webp');
+
 export const colorScheme = Appearance.getColorScheme();

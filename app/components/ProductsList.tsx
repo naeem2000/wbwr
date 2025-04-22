@@ -1,6 +1,15 @@
-import ProductInGridStyles, { backgroundImageStyles } from './utils/styles';
-import { numColumns, fallbackImg, productListBg } from './utils/constants';
-import React, { useCallback, useState } from 'react';
+import ProductInGridStyles, {
+	backgroundImageStyles,
+	headerStyles,
+} from './utils/styles';
+import {
+	numColumns,
+	fallbackImg,
+	productListBg,
+	headerImg,
+	screenWidth,
+} from './utils/constants';
+import React, { useCallback, useRef, useState } from 'react';
 import { ShopifyProduct } from './utils/modules';
 import {
 	View,
@@ -11,6 +20,8 @@ import {
 	ImageBackground,
 	TouchableOpacity,
 	ActivityIndicator,
+	ScrollView,
+	Button,
 } from 'react-native';
 
 interface Props {
@@ -27,6 +38,7 @@ export default function ProductsList({
 	isLoadingMore,
 }: Props) {
 	const [isRefreshing, setIsRefreshing] = useState(false);
+	const scrollViewRef = useRef<ScrollView>(null);
 
 	const onRefresh = useCallback(() => {
 		setIsRefreshing(true);
@@ -60,28 +72,39 @@ export default function ProductsList({
 		);
 	};
 
+	const handleShopNowPress = () => {
+		scrollViewRef.current?.scrollTo({ y: 200, animated: true });
+	};
+
 	return (
-		<ImageBackground
-			source={productListBg}
-			resizeMode='cover'
-			style={backgroundImageStyles.img}
-		>
-			<FlatList
-				data={data}
-				scrollsToTop={true}
-				renderItem={renderItem}
-				numColumns={numColumns}
-				keyExtractor={(_, index) => index.toString()}
-				onEndReached={loadMore}
-				onEndReachedThreshold={0.5}
-				ListFooterComponent={
-					isLoadingMore ? <ActivityIndicator style={{ margin: 16 }} /> : null
-				}
-				contentContainerStyle={ProductInGridStyles.productContainer}
-				refreshControl={
-					<RefreshControl refreshing={isRefreshing} onRefresh={onRefresh} />
-				}
-			/>
-		</ImageBackground>
+		<>
+			<ScrollView ref={scrollViewRef}>
+				<ImageBackground
+					source={headerImg}
+					resizeMode='cover'
+					style={headerStyles.headerBg}
+				>
+					<TouchableOpacity onPress={handleShopNowPress}>
+						<Text style={headerStyles.headerButton}>Shop now</Text>
+					</TouchableOpacity>
+				</ImageBackground>
+				<FlatList
+					data={data}
+					scrollsToTop={true}
+					renderItem={renderItem}
+					numColumns={numColumns}
+					keyExtractor={(_, index) => index.toString()}
+					onEndReached={loadMore}
+					onEndReachedThreshold={0.5}
+					ListFooterComponent={
+						isLoadingMore ? <ActivityIndicator style={{ margin: 16 }} /> : null
+					}
+					contentContainerStyle={ProductInGridStyles.productContainer}
+					refreshControl={
+						<RefreshControl refreshing={isRefreshing} onRefresh={onRefresh} />
+					}
+				/>
+			</ScrollView>
+		</>
 	);
 }
