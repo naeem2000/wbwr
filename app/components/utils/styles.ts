@@ -3,7 +3,7 @@ import { itemWidth } from './constants';
 import { Colors } from './modules';
 
 const colors: Colors = {
-	lightGrey: '#d3d3d352',
+	lightGrey: '#d3d3d3',
 	black: '#000000',
 };
 
@@ -20,9 +20,14 @@ const ProductInGridStyles = StyleSheet.create({
 	image: {
 		width: '100%',
 		height: 120,
+		borderTopRightRadius: 10,
+		borderTopLeftRadius: 10,
 	},
 	productText: {
 		padding: 10,
+		backgroundColor: colors.lightGrey,
+		borderBottomRightRadius: 10,
+		borderBottomLeftRadius: 10,
 	},
 	title: {
 		fontSize: 14,

@@ -1,4 +1,9 @@
-import { numColumns, fallbackImg } from './utils/constants';
+import {
+	numColumns,
+	fallbackImg,
+	screenWidth,
+	screenHeight,
+} from './utils/constants';
 import React, { useCallback, useState } from 'react';
 import ProductInGridStyles from './utils/styles';
 import ShopifyProduct from './utils/modules';
@@ -10,6 +15,8 @@ import {
 	RefreshControl,
 	TouchableOpacity,
 	ActivityIndicator,
+	ImageBackground,
+	StyleSheet,
 } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
@@ -41,16 +48,9 @@ export default function ProductsList({
 		const imageUrl = item.images.edges[0]?.node.url;
 		const price = item.variants.edges[0]?.node.price.amount;
 
-		async function onPress() {
-			// set the title in the local storage
-			await AsyncStorage.setItem('productTitle', item.title);
-			//then navigate
-			navigation.navigate('ProductDetail', { product: item });
-		}
-
 		return (
 			<TouchableOpacity
-				onPress={() => onPress()}
+				onPress={() => navigation.navigate('ProductDetail', { product: item })}
 				style={ProductInGridStyles.item}
 			>
 				<Image
@@ -68,21 +68,25 @@ export default function ProductsList({
 		);
 	};
 
+	const productListBg: string = '../../assets/images/logo-background.jpg';
+
 	return (
-		<FlatList
-			data={data}
-			renderItem={renderItem}
-			numColumns={numColumns}
-			keyExtractor={(_, index) => index.toString()}
-			onEndReached={loadMore}
-			onEndReachedThreshold={0.5}
-			ListFooterComponent={
-				isLoadingMore ? <ActivityIndicator style={{ margin: 16 }} /> : null
-			}
-			contentContainerStyle={ProductInGridStyles.productContainer}
-			refreshControl={
-				<RefreshControl refreshing={isRefreshing} onRefresh={onRefresh} />
-			}
-		/>
+		<ImageBackground source={require(productListBg)} resizeMode='cover'>
+			<FlatList
+				data={data}
+				renderItem={renderItem}
+				numColumns={numColumns}
+				keyExtractor={(_, index) => index.toString()}
+				onEndReached={loadMore}
+				onEndReachedThreshold={0.5}
+				ListFooterComponent={
+					isLoadingMore ? <ActivityIndicator style={{ margin: 16 }} /> : null
+				}
+				contentContainerStyle={ProductInGridStyles.productContainer}
+				refreshControl={
+					<RefreshControl refreshing={isRefreshing} onRefresh={onRefresh} />
+				}
+			/>
+		</ImageBackground>
 	);
 }

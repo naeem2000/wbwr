@@ -1,10 +1,15 @@
 import { RouteProp, useNavigation } from '@react-navigation/native';
 import React, { useLayoutEffect, useState } from 'react';
-import { Text, ScrollView } from 'react-native';
+import { Text, ScrollView, ImageBackground, StyleSheet } from 'react-native';
+import ShopifyProduct from './utils/modules';
+import { screenHeight, screenWidth } from './utils/constants';
 
 type Props = {
 	// Define the type of route params almost like the params hook from nextjs
-	route: RouteProp<{ ProductDetail: { product: any } }, 'ProductDetail'>;
+	route: RouteProp<
+		{ ProductDetail: { product: ShopifyProduct } },
+		'ProductDetail'
+	>;
 };
 export default function Product({ route }: Props) {
 	const navigation = useNavigation();
@@ -20,9 +25,25 @@ export default function Product({ route }: Props) {
 		});
 	}, [navigation]);
 
+	const productListBg: string = '../../assets/images/logo-background.jpg';
+
 	return (
 		<ScrollView>
-			<Text>Details for {product.title}</Text>
+			<ImageBackground
+				source={require(productListBg)}
+				resizeMode='cover'
+				style={styles.img}
+			>
+				<Text>Details for {product.title}</Text>
+			</ImageBackground>
 		</ScrollView>
 	);
 }
+const styles = StyleSheet.create({
+	img: {
+		height: screenHeight,
+		width: screenWidth,
+		justifyContent: 'flex-start',
+		alignItems: 'flex-start',
+	},
+});
