@@ -1,7 +1,7 @@
 {
 	"expo": {
-		"name": "wbwr",
-		"slug": "wbwr",
+		"name": "Vans",
+		"slug": "Vans",
 		"version": "1.0.0",
 		"orientation": "portrait",
 		"icon": "./assets/images/favicon.png",
@@ -15,7 +15,8 @@
 			"adaptiveIcon": {
 				"foregroundImage": "./assets/images/favicon.png",
 				"backgroundColor": "#000"
-			}
+			},
+			"package": "com.naeem2000.wbwr"
 		},
 		"web": {
 			"bundler": "metro",
@@ -36,6 +37,14 @@
 		],
 		"experiments": {
 			"typedRoutes": true
+		},
+		"extra": {
+			"router": {
+				"origin": false
+			},
+			"eas": {
+				"projectId": "6422e6e4-5c70-4dfa-957b-cff7e727ebd1"
+			}
 		}
 	}
 }

@@ -1,4 +1,4 @@
-import { Text, SafeAreaView, ActivityIndicator, Image } from 'react-native';
+import { Text, SafeAreaView, ActivityIndicator } from 'react-native';
 import { useProducts } from '../components/hooks/useProducts';
 import ProductsList from '../components/ProductsList';
 import React, { useState } from 'react';

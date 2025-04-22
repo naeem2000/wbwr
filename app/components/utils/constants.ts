@@ -16,3 +16,6 @@ export const fallbackImg = require('../../../assets/images/no-image-available.jp
 export const headerImg = require('../../../assets/images/header.webp');
 
 export const colorScheme = Appearance.getColorScheme();
+
+// take out the strings in the array befoer the .
+export const removeDecimals = (price: string) => price?.split?.('.')[0] ?? '';
