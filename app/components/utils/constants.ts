@@ -9,8 +9,7 @@ export const spacing: number = 16;
 export const itemWidth: number =
 	(screenWidth - spacing * (numColumns + 1)) / numColumns;
 
-export const backgroundImage: string =
-	'../../../assets/images/logo-background.jpg';
+export const productListBg = require('../../../assets/images/logo-background.jpg');
 
 export const fallbackImg = require('../../../assets/images/no-image-available.jpg');
 

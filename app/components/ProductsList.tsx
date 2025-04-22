@@ -1,12 +1,7 @@
-import {
-	numColumns,
-	fallbackImg,
-	screenWidth,
-	screenHeight,
-} from './utils/constants';
+import { numColumns, fallbackImg, productListBg } from './utils/constants';
 import React, { useCallback, useState } from 'react';
-import ProductInGridStyles from './utils/styles';
-import ShopifyProduct from './utils/modules';
+import ProductInGridStyles, { backgroundImageStyles } from './utils/styles';
+import { ShopifyProduct } from './utils/modules';
 import {
 	View,
 	Text,
@@ -18,7 +13,6 @@ import {
 	ImageBackground,
 	StyleSheet,
 } from 'react-native';
-import AsyncStorage from '@react-native-async-storage/async-storage';
 
 interface Props {
 	navigation: any;
@@ -47,7 +41,6 @@ export default function ProductsList({
 	const renderItem = ({ item }: { item: ShopifyProduct; index: number }) => {
 		const imageUrl = item.images.edges[0]?.node.url;
 		const price = item.variants.edges[0]?.node.price.amount;
-
 		return (
 			<TouchableOpacity
 				onPress={() => navigation.navigate('ProductDetail', { product: item })}
@@ -68,12 +61,15 @@ export default function ProductsList({
 		);
 	};
 
-	const productListBg: string = '../../assets/images/logo-background.jpg';
-
 	return (
-		<ImageBackground source={require(productListBg)} resizeMode='cover'>
+		<ImageBackground
+			source={productListBg}
+			resizeMode='cover'
+			style={backgroundImageStyles.img}
+		>
 			<FlatList
 				data={data}
+				scrollsToTop={true}
 				renderItem={renderItem}
 				numColumns={numColumns}
 				keyExtractor={(_, index) => index.toString()}

@@ -1,10 +1,11 @@
 import { StyleSheet } from 'react-native';
-import { itemWidth } from './constants';
+import { itemWidth, screenHeight, screenWidth } from './constants';
 import { Colors } from './modules';
 
 const colors: Colors = {
 	lightGrey: '#d3d3d3',
 	black: '#000000',
+	white: '#FFFFFF',
 };
 
 const ProductInGridStyles = StyleSheet.create({
@@ -25,7 +26,7 @@ const ProductInGridStyles = StyleSheet.create({
 	},
 	productText: {
 		padding: 10,
-		backgroundColor: colors.lightGrey,
+		backgroundColor: 'colors.lightGrey',
 		borderBottomRightRadius: 10,
 		borderBottomLeftRadius: 10,
 	},
@@ -36,6 +37,37 @@ const ProductInGridStyles = StyleSheet.create({
 	price: {
 		color: colors.black,
 		fontWeight: '500',
+	},
+});
+
+export const backgroundImageStyles = StyleSheet.create({
+	img: {
+		height: screenHeight,
+		width: screenWidth,
+		justifyContent: 'flex-start',
+		alignItems: 'flex-start',
+	},
+});
+
+export const productDetailStyles = StyleSheet.create({
+	container: {
+		padding: 20,
+		height: screenHeight,
+		width: screenWidth,
+	},
+	imgContainer: {
+		display: 'flex',
+		alignItems: 'center',
+		justifyContent: 'center',
+	},
+	imgRowContainer: {
+		marginTop: 20,
+		display: 'flex',
+		flexDirection: 'row',
+		flexWrap: 'wrap',
+		alignItems: 'center',
+		gap: 10,
+		justifyContent: 'space-between',
 	},
 });
 
