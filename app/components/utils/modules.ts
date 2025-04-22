@@ -1,34 +1,41 @@
-// image node
-interface ShopifyImageNode {
-	node: {
-		url: string;
-		altText: string | null;
-	};
+// image edge only node
+export interface ShopifyImageEdge {
+	edges: {
+		node: {
+			url: string;
+			altText: string | null;
+		};
+	}[];
 }
 
 // single item node
 interface ShopifyVariantNode {
-	node: {
-		id: string;
-		price: {
-			amount: string;
-			currencyCode: string;
+	edges: {
+		node: {
+			id: string;
+			title: string;
+			price: {
+				amount: string;
+				currencyCode: string;
+			};
+			image?: {
+				url: string;
+			};
+			selectedOptions: {
+				name: string;
+				value: string;
+			}[];
 		};
-	};
+	}[];
 }
 
 // whole product object
-export default interface ShopifyProduct {
+export interface ShopifyProduct {
 	id: string;
 	title: string;
-	handle: string;
 	description: string;
-	images: {
-		edges: ShopifyImageNode[];
-	};
-	variants: {
-		edges: ShopifyVariantNode[];
-	};
+	images: ShopifyImageEdge;
+	variants: ShopifyVariantNode;
 }
 
 // gql response type with pagination

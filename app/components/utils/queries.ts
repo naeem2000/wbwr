@@ -15,7 +15,7 @@ export const PRODUCTS_QUERY = gql`
 					title
 					handle
 					description
-					images(first: 1) {
+					images(first: 10) {
 						edges {
 							node {
 								url
@@ -23,13 +23,22 @@ export const PRODUCTS_QUERY = gql`
 							}
 						}
 					}
-					variants(first: 1) {
+					variants(first: 10) {
 						edges {
 							node {
 								id
+								title
+								availableForSale
 								price {
 									amount
 									currencyCode
+								}
+								image {
+									url
+								}
+								selectedOptions {
+									name
+									value
 								}
 							}
 						}

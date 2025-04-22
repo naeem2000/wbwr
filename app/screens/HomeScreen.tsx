@@ -2,11 +2,6 @@ import { Text, SafeAreaView, ActivityIndicator, Image } from 'react-native';
 import { useProducts } from '../components/hooks/useProducts';
 import ProductsList from '../components/ProductsList';
 import React, { useState } from 'react';
-import {
-	backgroundImage,
-	screenHeight,
-	screenWidth,
-} from '../components/utils/constants';
 
 type Props = {
 	navigation: any;

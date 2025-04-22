@@ -1,4 +1,9 @@
-import { colorScheme, backgroundImage } from './app/components/utils/constants';
+import {
+	colorScheme,
+	backgroundImage,
+	screenHeight,
+	screenWidth,
+} from './app/components/utils/constants';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import ProductDetailScreen from './app/components/ProductDetailScreen';
@@ -14,39 +19,32 @@ const Stack = createNativeStackNavigator();
 export default function RootLayout() {
 	return (
 		<QueryClientProvider client={queryClient}>
-			<ImageBackground
-				source={backgroundImage}
-				style={styles.background}
-				resizeMode='cover'
-			>
-				<NavigationContainer>
-					<Stack.Navigator
-						screenOptions={{
-							headerTitleAlign: 'center',
-							statusBarBackgroundColor:
-								colorScheme === 'dark' ? '#fff' : '#000',
+			<NavigationContainer>
+				<Stack.Navigator
+					screenOptions={{
+						headerTitleAlign: 'center',
+						statusBarBackgroundColor: colorScheme === 'dark' ? '#fff' : '#000',
+					}}
+				>
+					<Stack.Screen
+						name='Home'
+						component={HomeScreen}
+						options={{ title: 'Vans' }}
+					/>
+					<Stack.Screen
+						name='Product'
+						component={ProductScreen}
+						options={{ title: 'Product' }}
+					/>
+					<Stack.Screen
+						name='ProductDetail'
+						component={ProductDetailScreen as React.ComponentType<any>}
+						options={{
+							title: 'Product',
 						}}
-					>
-						<Stack.Screen
-							name='Home'
-							component={HomeScreen}
-							options={{ title: 'Vans' }}
-						/>
-						<Stack.Screen
-							name='Product'
-							component={ProductScreen}
-							options={{ title: 'Product' }}
-						/>
-						<Stack.Screen
-							name='ProductDetail'
-							component={ProductDetailScreen as React.ComponentType<any>}
-							options={{
-								title: 'Product',
-							}}
-						/>
-					</Stack.Navigator>
-				</NavigationContainer>
-			</ImageBackground>
+					/>
+				</Stack.Navigator>
+			</NavigationContainer>
 		</QueryClientProvider>
 	);
 }
