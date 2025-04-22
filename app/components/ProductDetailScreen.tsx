@@ -1,18 +1,20 @@
+import { backgroundImageStyles, productDetailStyles } from './utils/styles';
+import { fallbackImg, productListBg, screenWidth } from './utils/constants';
 import { RouteProp, useNavigation } from '@react-navigation/native';
-import React, { useLayoutEffect } from 'react';
+import React, { useLayoutEffect, useState } from 'react';
+import ImageViewer from 'react-native-image-zoom-viewer';
+import { ShopifyProduct } from './utils/modules';
+import { BlurView } from 'expo-blur';
 import {
 	Text,
-	Image,
-	ScrollView,
-	ImageBackground,
 	View,
+	Image,
+	Modal,
+	ScrollView,
 	StyleSheet,
+	ImageBackground,
+	TouchableOpacity,
 } from 'react-native';
-import { ShopifyProduct } from './utils/modules';
-import { fallbackImg, productListBg, screenWidth } from './utils/constants';
-import { backgroundImageStyles, productDetailStyles } from './utils/styles';
-import { BlurView } from 'expo-blur';
-
 type Props = {
 	// Define the type of route params almost like the params hook from nextjs
 	route: RouteProp<
@@ -21,7 +23,14 @@ type Props = {
 	>;
 };
 export default function Product({ route }: Props) {
+	// state for read more text
+	const [isExpanded, setIsExpanded] = useState(false);
+
+	//state for the image modal
+	const [isModalVisible, setIsModalVisible] = useState(false);
+
 	const navigation = useNavigation();
+
 	// getting the products param from the route almost like useparams from nextjs.
 	const { product } = route.params;
 
@@ -52,33 +61,79 @@ export default function Product({ route }: Props) {
 					<View style={productDetailStyles.imgContainer}>
 						<Image
 							resizeMode='contain'
-							width={250}
-							height={250}
-							source={imageUrl ? { uri: imageUrl } : fallbackImg}
+							style={{ width: 250, height: 250 }}
+							source={{ uri: imageUrl }}
 						/>
 					</View>
 					<View style={productDetailStyles.imgRowContainer}>
 						{product.images.edges.map((item, index) => {
 							return (
-								<Image
+								<TouchableOpacity
 									key={index}
-									resizeMode='contain'
-									width={70}
-									height={70}
-									source={imageUrl ? { uri: item.node.url } : fallbackImg}
-								/>
+									onPress={() => setIsModalVisible(true)}
+								>
+									<Image
+										resizeMode='contain'
+										style={productDetailStyles.rowImage}
+										source={imageUrl ? { uri: item.node.url } : fallbackImg}
+									/>
+								</TouchableOpacity>
 							);
 						})}
 					</View>
-					<Text style={{ color: 'white', marginTop: 30, fontSize: 27 }}>
-						{product.title}
-					</Text>
-					<Text style={{ color: 'white', marginTop: 30, fontSize: 25 }}>
+					<Modal
+						visible={isModalVisible}
+						transparent={true}
+						onRequestClose={() => setIsModalVisible(false)}
+					>
+						<ImageViewer
+							imageUrls={product.images.edges.map((item) => ({
+								url: item.node.url,
+							}))}
+							key={product.id}
+							onCancel={() => setIsModalVisible(false)}
+							enableSwipeDown={true}
+							enableImageZoom={true}
+						/>
+					</Modal>
+					<Text style={productDetailStyles.titleText}>{product.title}</Text>
+					<Text style={productDetailStyles.priceText}>
 						R{product.variants.edges[0].node.price.amount}
 					</Text>
-					<Text style={{ color: 'white', marginTop: 30, fontSize: 16 }}>
-						{product.description}
+					<Text style={productDetailStyles.sizesText}>
+						Sizes and colors:{' '}
+						{product.variants.edges
+							.map((item) =>
+								item.node.selectedOptions.map((item) => item.value)
+							)
+							.join(', ')}
 					</Text>
+					<Text style={productDetailStyles.descriptionText}>
+						{isExpanded
+							? product.description
+							: product.description.slice(0, 200)}
+					</Text>
+					{product.description.length > 200 && (
+						<TouchableOpacity
+							onPress={() => {
+								setIsExpanded(!isExpanded);
+							}}
+						>
+							<Text
+								style={
+									(productDetailStyles.descriptionText,
+									{
+										fontWeight: 'bold',
+										color: 'white',
+										marginTop: 5,
+										marginBottom: 100,
+									})
+								}
+							>
+								{isExpanded ? ' Show less' : ' Show more'}
+							</Text>
+						</TouchableOpacity>
+					)}
 				</View>
 			</ScrollView>
 		</ImageBackground>

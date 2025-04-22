@@ -1,6 +1,6 @@
+import ProductInGridStyles, { backgroundImageStyles } from './utils/styles';
 import { numColumns, fallbackImg, productListBg } from './utils/constants';
 import React, { useCallback, useState } from 'react';
-import ProductInGridStyles, { backgroundImageStyles } from './utils/styles';
 import { ShopifyProduct } from './utils/modules';
 import {
 	View,
@@ -8,10 +8,9 @@ import {
 	Image,
 	FlatList,
 	RefreshControl,
+	ImageBackground,
 	TouchableOpacity,
 	ActivityIndicator,
-	ImageBackground,
-	StyleSheet,
 } from 'react-native';
 
 interface Props {

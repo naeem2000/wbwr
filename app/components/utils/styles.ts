@@ -67,7 +67,31 @@ export const productDetailStyles = StyleSheet.create({
 		flexWrap: 'wrap',
 		alignItems: 'center',
 		gap: 10,
-		justifyContent: 'space-between',
+		justifyContent: 'center',
+	},
+	titleText: {
+		color: colors.white,
+		fontSize: 27,
+		marginTop: 30,
+	},
+	descriptionText: {
+		marginTop: 30,
+		color: colors.white,
+		fontSize: 16,
+	},
+	priceText: {
+		color: colors.white,
+		marginTop: 30,
+		fontSize: 25,
+	},
+	sizesText: {
+		color: colors.white,
+		marginTop: 30,
+		fontSize: 20,
+	},
+	rowImage: {
+		width: 70,
+		height: 70,
 	},
 });
 
