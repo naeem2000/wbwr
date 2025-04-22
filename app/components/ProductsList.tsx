@@ -1,14 +1,5 @@
-import ProductInGridStyles, {
-	backgroundImageStyles,
-	headerStyles,
-} from './utils/styles';
-import {
-	numColumns,
-	fallbackImg,
-	productListBg,
-	headerImg,
-	screenWidth,
-} from './utils/constants';
+import { numColumns, fallbackImg, headerImg } from './utils/constants';
+import ProductInGridStyles, { headerStyles } from './utils/styles';
 import React, { useCallback, useRef, useState } from 'react';
 import { ShopifyProduct } from './utils/modules';
 import {
@@ -16,12 +7,11 @@ import {
 	Text,
 	Image,
 	FlatList,
+	ScrollView,
 	RefreshControl,
 	ImageBackground,
 	TouchableOpacity,
 	ActivityIndicator,
-	ScrollView,
-	Button,
 } from 'react-native';
 
 interface Props {
@@ -40,9 +30,9 @@ export default function ProductsList({
 	const [isRefreshing, setIsRefreshing] = useState(false);
 	const scrollViewRef = useRef<ScrollView>(null);
 
+	// used a callback so the function is not recreated all the time it renders
 	const onRefresh = useCallback(() => {
 		setIsRefreshing(true);
-
 		loadMore();
 		setTimeout(() => {
 			setIsRefreshing(false);
@@ -72,6 +62,7 @@ export default function ProductsList({
 		);
 	};
 
+	// function for the ref to scroll to the list
 	const handleShopNowPress = () => {
 		scrollViewRef.current?.scrollTo({ y: 200, animated: true });
 	};

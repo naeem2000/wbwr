@@ -88,8 +88,6 @@ export default function Product({ route }: Props) {
 							);
 						})}
 					</View>
-
-					{/* Modal to display the selected image */}
 					<Modal
 						visible={isModalVisible}
 						transparent={true}
